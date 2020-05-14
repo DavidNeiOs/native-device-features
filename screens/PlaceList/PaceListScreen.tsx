@@ -1,9 +1,29 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, Text, Platform } from 'react-native';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
-interface PaceListScreenProps {}
+import { PlacesNavProps } from '../../navigation/PlacesNavigator';
+import { CustomHeaderButton } from '../../components/HeaderButton';
 
-export const PaceListScreen: React.FC<PaceListScreenProps> = ({}) => {
+interface PlaceListScreenProps extends PlacesNavProps<'PlaceListScreen'> {}
+
+export const PlaceListScreen: React.FC<PlaceListScreenProps> = ({
+  navigation,
+}) => {
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            title='Save'
+            iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
+            onPress={() => navigation.navigate('NewPlaceScreen')}
+          />
+        </HeaderButtons>
+      ),
+    });
+  }, [navigation]);
+
   return (
     <View>
       <Text>Place List</Text>
