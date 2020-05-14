@@ -49,6 +49,16 @@ export const PlacesNavigator = () => {
           component={NewPlaceScreen}
           options={{ title: 'Add New Place' }}
         />
+        <Stack.Screen
+          name='PlaceDetailsScreen'
+          component={PlaceDetailsScreen}
+          options={{ headerTitle: undefined }}
+        />
+        <Stack.Screen
+          name='MapScreen'
+          component={MapScreen}
+          options={{ headerTitle: undefined }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
