@@ -1,15 +1,19 @@
 import React, { useCallback } from 'react';
-import { View, Text, Platform } from 'react-native';
+import { View, Text, Platform, FlatList } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { PlacesNavProps } from '../../navigation/PlacesNavigator';
 import { CustomHeaderButton } from '../../components/HeaderButton';
+import { useTypedSelector } from '../../store';
+import { PlaceItem } from '../../components/PlaceItem';
 
 interface PlaceListScreenProps extends PlacesNavProps<'PlaceListScreen'> {}
 
 export const PlaceListScreen: React.FC<PlaceListScreenProps> = ({
   navigation,
 }) => {
+  const places = useTypedSelector((state) => state.places.places);
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -25,8 +29,21 @@ export const PlaceListScreen: React.FC<PlaceListScreenProps> = ({
   }, [navigation]);
 
   return (
-    <View>
-      <Text>Place List</Text>
-    </View>
+    <FlatList
+      data={places}
+      renderItem={(itemData) => (
+        <PlaceItem
+          image=''
+          title={itemData.item.title}
+          address=''
+          onSelect={() =>
+            navigation.navigate('PlaceDetailsScreen', {
+              placeTitle: itemData.item.title,
+              placeId: itemData.item.id,
+            })
+          }
+        />
+      )}
+    />
   );
 };

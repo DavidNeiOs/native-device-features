@@ -16,7 +16,10 @@ export type PlacesParamList = {
   PlaceListScreen: undefined;
   MapScreen: undefined;
   NewPlaceScreen: undefined;
-  PlaceDetailsScreen: undefined;
+  PlaceDetailsScreen: {
+    placeTitle: string;
+    placeId: string;
+  };
 };
 
 export type PlacesNavProps<T extends keyof PlacesParamList> = {
@@ -52,7 +55,7 @@ export const PlacesNavigator = () => {
         <Stack.Screen
           name='PlaceDetailsScreen'
           component={PlaceDetailsScreen}
-          options={{ headerTitle: undefined }}
+          options={({ route }) => ({ headerTitle: route.params.placeTitle })}
         />
         <Stack.Screen
           name='MapScreen'
