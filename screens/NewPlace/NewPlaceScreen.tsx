@@ -7,18 +7,27 @@ import {
   Button,
   StyleSheet,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { addPlace } from '../../store/places.actions';
 import colors from '../../constants/colors';
+import { PlacesNavProps } from '../../navigation/PlacesNavigator';
 
-interface NewPlaceScreenProps {}
+interface NewPlaceScreenProps extends PlacesNavProps<'NewPlaceScreen'> {}
 
-export const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({}) => {
+export const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({
+  navigation,
+}) => {
   const [titleValue, setTitleValue] = useState('');
+  const dispatch = useDispatch();
 
   const titleChangeHandler = (text: string) => {
     setTitleValue(text);
   };
 
-  const savePlaceHandler = () => {};
+  const savePlaceHandler = () => {
+    dispatch(addPlace(titleValue));
+    navigation.goBack();
+  };
 
   return (
     <ScrollView>
