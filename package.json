@@ -12,6 +12,7 @@
     "@react-navigation/native": "^5.3.0",
     "@react-navigation/stack": "^5.3.3",
     "expo": "~37.0.3",
+    "expo-file-system": "~8.1.0",
     "expo-image-picker": "~8.1.0",
     "expo-permissions": "~8.1.0",
     "react": "~16.9.0",
