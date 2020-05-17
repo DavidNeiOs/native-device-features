@@ -13,6 +13,7 @@ import { addPlace } from '../../store/places.actions';
 import colors from '../../constants/colors';
 import { PlacesNavProps } from '../../navigation/PlacesNavigator';
 import { ImagePicker } from '../../components/ImagePicker';
+import { LocationPicker } from '../../components/LocationPicker';
 
 interface NewPlaceScreenProps extends PlacesNavProps<'NewPlaceScreen'> {}
 
@@ -45,6 +46,7 @@ export const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({
           value={titleValue}
         />
         <ImagePicker onImageTaken={imageTakenHandler} />
+        <LocationPicker />
         <Button
           title='Save Place'
           color={colors.primary}
