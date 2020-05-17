@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Button, Text, Image, Alert, StyleSheet } from 'react-native';
 import * as ImgPicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -8,6 +8,8 @@ import colors from '../../constants/colors';
 interface ImagePickerProps {}
 
 export const ImagePicker: React.FC<ImagePickerProps> = ({}) => {
+  const [pickedImage, setPickedImage] = useState('');
+
   const verifyPermissions = async () => {
     const result = await Permissions.askAsync(
       Permissions.CAMERA,
@@ -28,13 +30,23 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({}) => {
     if (!hasPermission) {
       return;
     }
-    ImgPicker.launchCameraAsync();
+    const image = await ImgPicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [16, 9],
+      quality: 0.5,
+    });
+    if (!image.cancelled) {
+      setPickedImage(image.uri);
+    }
   };
   return (
     <View style={styles.imagePicker}>
       <View style={styles.imagePreview}>
-        <Text>No image picked yet.</Text>
-        <Image style={styles.image} source={{ uri: '' }} />
+        {pickedImage ? (
+          <Image style={styles.image} source={{ uri: pickedImage }} />
+        ) : (
+          <Text>No image picked yet.</Text>
+        )}
       </View>
       <Button
         title='Take Image'
