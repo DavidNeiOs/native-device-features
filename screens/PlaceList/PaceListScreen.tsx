@@ -33,7 +33,7 @@ export const PlaceListScreen: React.FC<PlaceListScreenProps> = ({
       data={places}
       renderItem={(itemData) => (
         <PlaceItem
-          image=''
+          image={itemData.item.image}
           title={itemData.item.title}
           address=''
           onSelect={() =>

@@ -11,6 +11,7 @@ export default (state = initialState, action: PlacesActions) => {
       const newPlace: Place = {
         id: new Date().toISOString(),
         title: action.placeData.title,
+        image: action.placeData.image,
       };
       return {
         ...state,

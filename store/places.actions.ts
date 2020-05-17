@@ -4,11 +4,12 @@ interface AddPlaceAction {
   type: typeof ADD_PLACE;
   placeData: {
     title: string;
+    image: string;
   };
 }
 
-export const addPlace = (title: string) => {
-  return { type: ADD_PLACE, placeData: { title } };
+export const addPlace = (title: string, image: string) => {
+  return { type: ADD_PLACE, placeData: { title, image } };
 };
 
 export type PlacesActions = AddPlaceAction;

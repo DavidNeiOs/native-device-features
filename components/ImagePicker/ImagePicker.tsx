@@ -5,9 +5,11 @@ import * as Permissions from 'expo-permissions';
 
 import colors from '../../constants/colors';
 
-interface ImagePickerProps {}
+interface ImagePickerProps {
+  onImageTaken: (uri: string) => void;
+}
 
-export const ImagePicker: React.FC<ImagePickerProps> = ({}) => {
+export const ImagePicker: React.FC<ImagePickerProps> = ({ onImageTaken }) => {
   const [pickedImage, setPickedImage] = useState('');
 
   const verifyPermissions = async () => {
@@ -37,6 +39,7 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({}) => {
     });
     if (!image.cancelled) {
       setPickedImage(image.uri);
+      onImageTaken(image.uri);
     }
   };
   return (
@@ -60,6 +63,7 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({}) => {
 const styles = StyleSheet.create({
   imagePicker: {
     alignItems: 'center',
+    marginBottom: 15,
   },
   imagePreview: {
     width: '100%',

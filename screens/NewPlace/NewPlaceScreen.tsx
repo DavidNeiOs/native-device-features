@@ -20,14 +20,18 @@ export const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({
   navigation,
 }) => {
   const [titleValue, setTitleValue] = useState('');
+  const [image, setImage] = useState('');
   const dispatch = useDispatch();
 
+  const imageTakenHandler = (text: string) => {
+    setImage(text);
+  };
   const titleChangeHandler = (text: string) => {
     setTitleValue(text);
   };
 
   const savePlaceHandler = () => {
-    dispatch(addPlace(titleValue));
+    dispatch(addPlace(titleValue, image));
     navigation.goBack();
   };
 
@@ -40,7 +44,7 @@ export const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({
           onChangeText={titleChangeHandler}
           value={titleValue}
         />
-        <ImagePicker />
+        <ImagePicker onImageTaken={imageTakenHandler} />
         <Button
           title='Save Place'
           color={colors.primary}
