@@ -8,9 +8,11 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
+
 import { addPlace } from '../../store/places.actions';
 import colors from '../../constants/colors';
 import { PlacesNavProps } from '../../navigation/PlacesNavigator';
+import { ImagePicker } from '../../components/ImagePicker';
 
 interface NewPlaceScreenProps extends PlacesNavProps<'NewPlaceScreen'> {}
 
@@ -38,6 +40,7 @@ export const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({
           onChangeText={titleChangeHandler}
           value={titleValue}
         />
+        <ImagePicker />
         <Button
           title='Save Place'
           color={colors.primary}
