@@ -2,12 +2,14 @@ import * as FileSystem from 'expo-file-system';
 import { ThunkAction } from 'redux-thunk';
 
 import { RootState } from './index';
+import { insertPlace } from '../helpers/db';
 
 export const ADD_PLACE = 'ADD_PLACE';
 
 interface AddPlaceAction {
   type: typeof ADD_PLACE;
   placeData: {
+    id: number;
     title: string;
     image: string;
   };
@@ -29,10 +31,19 @@ export const addPlace = (
       from: image,
       to: newPath,
     });
+    const dbResult = await insertPlace(
+      title,
+      newPath,
+      'dummy adress',
+      15.6,
+      12.3
+    );
+    dispatch({
+      type: ADD_PLACE,
+      placeData: { id: dbResult.insertId, title, image: newPath },
+    });
   } catch (err) {
     console.log(err);
     throw err;
   }
-
-  dispatch({ type: ADD_PLACE, placeData: { title, image: newPath } });
 };

@@ -20,3 +20,28 @@ export const init = () => {
   });
   return promise;
 };
+
+export const insertPlace = (
+  title: string,
+  imageUri: string,
+  address: string,
+  lat: number,
+  lng: number
+) => {
+  const promise = new Promise<SQLite.SQLResultSet>((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'INSERT INTO places (title, imageUri, address, lat, lng) VALUES (?, ?, ?, ?, ?);',
+        [title, imageUri, address, lat, lng],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+          return false;
+        }
+      );
+    });
+  });
+  return promise;
+};

@@ -9,7 +9,7 @@ export default (state = initialState, action: PlacesActions) => {
   switch (action.type) {
     case ADD_PLACE:
       const newPlace: Place = {
-        id: new Date().toISOString(),
+        id: action.placeData.id.toString(),
         title: action.placeData.title,
         image: action.placeData.image,
       };
