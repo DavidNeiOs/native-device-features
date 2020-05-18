@@ -11,14 +11,18 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
 import colors from '../../constants/colors';
+import { MapPreview } from '../MapPreview';
 
 interface LocationPickerProps {}
 
 export const LocationPicker: React.FC<LocationPickerProps> = ({}) => {
-  const [pickedLocation, setPickedLocation] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
+  const [pickedLocation, setPickedLocation] = useState<
+    | {
+        lat: number;
+        lng: number;
+      }
+    | undefined
+  >(undefined);
   const [isFetching, setIsFetching] = useState(false);
 
   const verifyPermissions = async () => {
@@ -59,13 +63,13 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({}) => {
   };
   return (
     <View style={styles.locationPicker}>
-      <View style={styles.mapPreview}>
+      <MapPreview style={styles.mapPreview} location={pickedLocation}>
         {isFetching ? (
           <ActivityIndicator size='large' />
         ) : (
           <Text>No location chosen yet!</Text>
         )}
-      </View>
+      </MapPreview>
       <Button
         title='Get user location'
         color={colors.primary}
@@ -85,7 +89,5 @@ const styles = StyleSheet.create({
     height: 150,
     borderColor: '#ccc',
     borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
