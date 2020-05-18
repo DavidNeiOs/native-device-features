@@ -5,6 +5,7 @@ import {
   createStackNavigator,
   StackNavigationProp,
 } from '@react-navigation/stack';
+import { LatLng } from 'react-native-maps';
 
 import { MapScreen } from '../screens/Map';
 import { NewPlaceScreen } from '../screens/NewPlace';
@@ -15,7 +16,9 @@ import colors from '../constants/colors';
 export type PlacesParamList = {
   PlaceListScreen: undefined;
   MapScreen: undefined;
-  NewPlaceScreen: undefined;
+  NewPlaceScreen: {
+    pickedLocation?: LatLng;
+  };
   PlaceDetailsScreen: {
     placeTitle: string;
     placeId: string;
@@ -60,7 +63,9 @@ export const PlacesNavigator = () => {
         <Stack.Screen
           name='MapScreen'
           component={MapScreen}
-          options={{ headerTitle: undefined }}
+          options={() => ({
+            headerTitle: undefined,
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>
