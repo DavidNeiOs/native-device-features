@@ -11,7 +11,10 @@ import { useDispatch } from 'react-redux';
 
 import { addPlace } from '../../store/places.actions';
 import colors from '../../constants/colors';
-import { PlacesNavProps } from '../../navigation/PlacesNavigator';
+import {
+  PlacesNavProps,
+  PlacesParamList,
+} from '../../navigation/PlacesNavigator';
 import { ImagePicker } from '../../components/ImagePicker';
 import { LocationPicker } from '../../components/LocationPicker';
 
@@ -36,6 +39,10 @@ export const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({
     navigation.goBack();
   };
 
+  const navigate = (screen: keyof PlacesParamList) => {
+    navigation.navigate(screen);
+  };
+
   return (
     <ScrollView>
       <View style={styles.form}>
@@ -46,7 +53,7 @@ export const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({
           value={titleValue}
         />
         <ImagePicker onImageTaken={imageTakenHandler} />
-        <LocationPicker />
+        <LocationPicker navigate={navigate} />
         <Button
           title='Save Place'
           color={colors.primary}

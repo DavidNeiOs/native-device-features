@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Image, StyleSheet, ViewStyle } from 'react-native';
+import { TouchableOpacity, Image, StyleSheet, ViewStyle } from 'react-native';
 
-import { vars } from '../../env';
+import { vars } from '../../constants/env';
 
 interface MapPreviewProps {
   location?: {
@@ -9,12 +9,14 @@ interface MapPreviewProps {
     lng: number;
   };
   style: ViewStyle;
+  onPress: () => void;
 }
 
 export const MapPreview: React.FC<MapPreviewProps> = ({
   location,
   children,
   style: overrideStyles,
+  onPress,
 }) => {
   let imagePreviewUrl;
   if (location) {
@@ -22,13 +24,16 @@ export const MapPreview: React.FC<MapPreviewProps> = ({
   }
 
   return (
-    <View style={{ ...styles.mapPreview, ...overrideStyles }}>
+    <TouchableOpacity
+      style={{ ...styles.mapPreview, ...overrideStyles }}
+      onPress={onPress}
+    >
       {location ? (
         <Image style={styles.mapImage} source={{ uri: imagePreviewUrl }} />
       ) : (
         children
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 
