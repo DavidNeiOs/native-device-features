@@ -6,15 +6,15 @@ import { LatLng } from 'react-native-maps';
 
 interface MapPreviewProps {
   location?: LatLng;
-  style: ViewStyle;
-  onPress: () => void;
+  style?: ViewStyle;
+  onPress?: () => void;
 }
 
 export const MapPreview: React.FC<MapPreviewProps> = ({
   location,
   children,
-  style: overrideStyles,
-  onPress,
+  style: overrideStyles = {},
+  onPress = () => {},
 }) => {
   let imagePreviewUrl;
   if (location) {

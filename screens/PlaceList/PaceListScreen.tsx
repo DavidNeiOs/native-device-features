@@ -42,7 +42,7 @@ export const PlaceListScreen: React.FC<PlaceListScreenProps> = ({
         <PlaceItem
           image={itemData.item.imageUri}
           title={itemData.item.title}
-          address=''
+          address={itemData.item.address}
           onSelect={() =>
             navigation.navigate('PlaceDetailsScreen', {
               placeTitle: itemData.item.title,
