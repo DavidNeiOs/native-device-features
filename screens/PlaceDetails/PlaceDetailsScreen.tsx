@@ -17,28 +17,39 @@ export const PlaceDetailsScreen: React.FC<PlaceDetailsScreenProps> = ({
   const selectedPlace = useTypedSelector((state) =>
     state.places.places.find((place) => place.id === placeId)
   );
-
-  return selectedPlace ? (
-    <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
-      <Image source={{ uri: selectedPlace.imageUri }} style={styles.image} />
-      <View style={styles.locationContainer}>
-        <View style={styles.addressContainer}>
-          <Text style={styles.address}>{selectedPlace.address}</Text>
+  if (selectedPlace) {
+    const selectedLocation = {
+      latitude: selectedPlace.lat,
+      longitude: selectedPlace.lng,
+    };
+    const showMapHandler = () => {
+      navigation.navigate('MapScreen', {
+        readOnly: true,
+        initialLocation: selectedLocation,
+      });
+    };
+    return (
+      <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+        <Image source={{ uri: selectedPlace.imageUri }} style={styles.image} />
+        <View style={styles.locationContainer}>
+          <View style={styles.addressContainer}>
+            <Text style={styles.address}>{selectedPlace.address}</Text>
+          </View>
+          <MapPreview
+            style={styles.mapPreview}
+            location={selectedLocation}
+            onPress={showMapHandler}
+          />
         </View>
-        <MapPreview
-          style={styles.mapPreview}
-          location={{
-            latitude: selectedPlace.lat,
-            longitude: selectedPlace.lng,
-          }}
-        />
+      </ScrollView>
+    );
+  } else {
+    return (
+      <View>
+        <Text>Error getting the place</Text>
       </View>
-    </ScrollView>
-  ) : (
-    <View>
-      <Text>Error getting the place</Text>
-    </View>
-  );
+    );
+  }
 };
 
 const styles = StyleSheet.create({

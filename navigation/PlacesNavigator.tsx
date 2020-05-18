@@ -15,7 +15,10 @@ import colors from '../constants/colors';
 
 export type PlacesParamList = {
   PlaceListScreen: undefined;
-  MapScreen: undefined;
+  MapScreen: {
+    initialLocation?: LatLng;
+    readOnly?: boolean;
+  };
   NewPlaceScreen: {
     pickedLocation?: LatLng;
   };

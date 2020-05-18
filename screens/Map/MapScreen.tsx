@@ -13,10 +13,13 @@ import colors from '../../constants/colors';
 
 interface MapScreenProps extends PlacesNavProps<'MapScreen'> {}
 
-export const MapScreen: React.FC<MapScreenProps> = ({ navigation }) => {
-  const [selectedLocation, setSelectedLocation] = useState<
-    LatLng | undefined
-  >();
+export const MapScreen: React.FC<MapScreenProps> = ({ navigation, route }) => {
+  const initialLocation = route.params?.initialLocation;
+  const readOnly = route.params?.readOnly;
+
+  const [selectedLocation, setSelectedLocation] = useState<LatLng | undefined>(
+    initialLocation
+  );
 
   const saveLocationHandler = useCallback(() => {
     if (!selectedLocation) return;
@@ -24,6 +27,7 @@ export const MapScreen: React.FC<MapScreenProps> = ({ navigation }) => {
   }, [selectedLocation]);
 
   React.useLayoutEffect(() => {
+    if (readOnly) return;
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
@@ -37,13 +41,16 @@ export const MapScreen: React.FC<MapScreenProps> = ({ navigation }) => {
   }, [navigation, saveLocationHandler]);
 
   const mapRegion: Region = {
-    latitude: 37.78,
-    longitude: -122.43,
+    latitude: initialLocation ? initialLocation.latitude : 37.78,
+    longitude: initialLocation ? initialLocation.longitude : -122.43,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   };
 
   const selectLocationHandler = (event: MapEvent) => {
+    if (readOnly) {
+      return;
+    }
     setSelectedLocation({
       latitude: event.nativeEvent.coordinate.latitude,
       longitude: event.nativeEvent.coordinate.longitude,
