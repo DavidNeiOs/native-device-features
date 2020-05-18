@@ -4,6 +4,7 @@ import { ThunkAction } from 'redux-thunk';
 import { RootState } from './index';
 import { insertPlace, fetchPlaces } from '../helpers/db';
 import { Place } from './types';
+import { vars } from '../constants/env';
 
 export const ADD_PLACE = 'ADD_PLACE';
 export const SET_PLACES = 'SET_PLACES';
@@ -30,12 +31,27 @@ type ThunkResult<R> = ThunkAction<R, RootState, undefined, PlacesActions>;
 
 export const addPlace = (
   title: string,
-  image: string
+  image: string,
+  location: { lat: number; lng: number }
 ): ThunkResult<void> => async (dispatch) => {
   const fileName = image.split('/').pop();
   const newPath = FileSystem.documentDirectory
     ? FileSystem.documentDirectory + fileName
     : '';
+
+  const response = await fetch(
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${vars.googleApiKey}`
+  );
+  if (!response) {
+    throw new Error('Something went wrong');
+  }
+
+  const resData = await response.json();
+  if (!resData.results) {
+    throw new Error('Something went wrong');
+  }
+
+  const address = resData.results[0].formatted_address;
 
   try {
     await FileSystem.moveAsync({
@@ -45,9 +61,9 @@ export const addPlace = (
     const dbResult = await insertPlace(
       title,
       newPath,
-      'dummy adress',
-      15.6,
-      12.3
+      address,
+      location.lat,
+      location.lng
     );
     dispatch({
       type: ADD_PLACE,
@@ -55,9 +71,9 @@ export const addPlace = (
         id: dbResult.insertId,
         title,
         image: newPath,
-        address: 'dummy adress',
-        lat: 15.6,
-        lng: 12.3,
+        address,
+        lat: location.lat,
+        lng: location.lng,
       },
     });
   } catch (err) {
@@ -69,7 +85,6 @@ export const addPlace = (
 export const loadPlaces = (): ThunkResult<void> => async (dispatch) => {
   try {
     const dbResult = await fetchPlaces();
-    console.log(dbResult);
     dispatch({
       type: SET_PLACES,
       // @ts-ignore _array not part of rows object in types

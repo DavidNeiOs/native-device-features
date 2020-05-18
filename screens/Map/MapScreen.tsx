@@ -34,7 +34,7 @@ export const MapScreen: React.FC<MapScreenProps> = ({ navigation }) => {
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [navigation, saveLocationHandler]);
 
   const mapRegion: Region = {
     latitude: 37.78,

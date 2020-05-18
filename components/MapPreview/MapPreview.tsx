@@ -2,12 +2,10 @@ import React from 'react';
 import { TouchableOpacity, Image, StyleSheet, ViewStyle } from 'react-native';
 
 import { vars } from '../../constants/env';
+import { LatLng } from 'react-native-maps';
 
 interface MapPreviewProps {
-  location?: {
-    lat: number;
-    lng: number;
-  };
+  location?: LatLng;
   style: ViewStyle;
   onPress: () => void;
 }
@@ -20,7 +18,7 @@ export const MapPreview: React.FC<MapPreviewProps> = ({
 }) => {
   let imagePreviewUrl;
   if (location) {
-    imagePreviewUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${location.lat},${location.lng}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:A%7C${location.lat},${location.lng}&key=${vars.googleApiKey}`;
+    imagePreviewUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:A%7C${location.latitude},${location.longitude}&key=${vars.googleApiKey}`;
   }
 
   return (

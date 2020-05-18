@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Button,
@@ -13,20 +13,33 @@ import * as Permissions from 'expo-permissions';
 import colors from '../../constants/colors';
 import { MapPreview } from '../MapPreview';
 import { PlacesParamList } from '../../navigation/PlacesNavigator';
+import { LatLng } from 'react-native-maps';
 
 interface LocationPickerProps {
   navigate: (screen: keyof PlacesParamList) => void;
+  location?: LatLng;
+  onLocationPicked: (location: { lat: number; lng: number }) => void;
 }
 
-export const LocationPicker: React.FC<LocationPickerProps> = ({ navigate }) => {
-  const [pickedLocation, setPickedLocation] = useState<
-    | {
-        lat: number;
-        lng: number;
-      }
-    | undefined
-  >(undefined);
+export const LocationPicker: React.FC<LocationPickerProps> = ({
+  navigate,
+  location,
+  onLocationPicked,
+}) => {
+  const [pickedLocation, setPickedLocation] = useState<LatLng | undefined>(
+    undefined
+  );
   const [isFetching, setIsFetching] = useState(false);
+
+  useEffect(() => {
+    if (location) {
+      setPickedLocation(location);
+      onLocationPicked({
+        lat: location.latitude,
+        lng: location.longitude,
+      });
+    }
+  }, [location, onLocationPicked]);
 
   const verifyPermissions = async () => {
     const result = await Permissions.askAsync(Permissions.LOCATION);
@@ -52,6 +65,10 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({ navigate }) => {
         timeout: 5000,
       });
       setPickedLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+      onLocationPicked({
         lat: location.coords.latitude,
         lng: location.coords.longitude,
       });
